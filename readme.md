@@ -30,6 +30,7 @@ Feel free to open issues or submit pull requests.
 
 # Project File Structure
 
+```bash
 Databricks/
 ├── docker-compose2.yml
 ├── docker-compose.yml
