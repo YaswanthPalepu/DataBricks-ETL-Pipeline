@@ -3,7 +3,7 @@
 .env
 *.log
 temp/
-
+*.kaggle/
 # Python
 __pycache__/
 *.pyc
