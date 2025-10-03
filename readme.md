@@ -27,3 +27,69 @@ Refer to `process.md` for detailed instructions on setting up the environment an
 ## Contributions
 
 Feel free to open issues or submit pull requests.
+
+# Project File Structure
+
+Databricks/
+├── docker-compose2.yml
+├── docker-compose.yml
+├── jars/
+│ ├── aws-java-sdk-bundle-1.12.340.jar
+│ └── hadoop-aws-3.3.4.jar
+├── loader/
+│ └── load_gold_to_postgres.py
+├── my-notebooks/
+│ ├── real_one.ipynb
+│ ├── spark-warehouse/
+│ │ └── telco_catalog.db/
+│ ├── telco-pipeline/
+│ │ ├── config.py
+│ │ ├── data_pipeline.py
+│ │ ├── pycache/ # Compiled Python files (auto-generated)
+│ │ │ └── config.cpython-311.pyc
+│ │ ├── running.ipynb
+│ │ ├── stages/
+│ │ │ ├── bronze.py
+│ │ │ ├── gold.py
+│ │ │ ├── landing.py
+│ │ │ ├── pycache/ # Compiled Python files (auto-generated)
+│ │ │ │ ├── bronze.cpython-311.pyc
+│ │ │ │ ├── gold.cpython-311.pyc
+│ │ │ │ ├── landing.cpython-311.pyc
+│ │ │ │ └── silver.cpython-311.pyc
+│ │ │ └── silver.py
+│ │ └── utils/
+│ │ ├── pycache/ # Compiled Python files (auto-generated)
+│ │ │ ├── spark_utils.cpython-311.pyc
+│ │ │ └── validation_utils.cpython-311.pyc
+│ │ ├── spark_utils.py
+│ │ └── validation_utils.py
+│ └── testing.ipynb
+├── notebooks/
+│ ├── data/
+│ │ ├── gold/ # Gold layer processed data (Parquet)
+│ │ │ ├── dim_contract/
+│ │ │ │ ├── part-00000-...parquet
+│ │ │ │ └── _SUCCESS
+│ │ │ ├── dim_customer/
+│ │ │ │ ├── part-00000-...parquet
+│ │ │ │ └── _SUCCESS
+│ │ │ ├── dim_payment/
+│ │ │ │ ├── part-00000-...parquet
+│ │ │ │ └── _SUCCESS
+│ │ │ ├── dim_services/
+│ │ │ │ ├── part-00000-...parquet
+│ │ │ │ └── _SUCCESS
+│ │ │ └── fact_churn/
+│ │ │ ├── part-00000-...parquet
+│ │ │ └── _SUCCESS
+│ │ └── silver/ # Silver layer processed data (Parquet)
+│ │ └── telco_churn/
+│ │ ├── part-00000-...parquet
+│ │ └── _SUCCESS
+│ └── datasets/ # Raw input datasets
+│ ├── telco-customer-churn.zip
+│ └── WA_Fn-UseC-Telco-Customer-Churn.csv
+├── process.md
+├── readme.md
+└── spark-data/ # Directory for Spark-related temporary/external data
