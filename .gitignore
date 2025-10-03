@@ -1,0 +1,24 @@
+# General
+.DS_Store
+.env
+*.log
+temp/
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+my-notebooks/derby.log
+my-notebooks/metastore_db/
+my-notebooks/spark-warehouse/
+my-notebooks/telco-pipeline/derby.log
+my-notebooks/telco-pipeline/metastore_db/
+
+# Spark/Hadoop
+spark-data/
+jars/
+data/
+datasets/
+

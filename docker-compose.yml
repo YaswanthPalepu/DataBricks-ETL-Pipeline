@@ -1,0 +1,66 @@
+services:
+  jupyter:
+    image: jupyter/pyspark-notebook:latest
+    container_name: spark-jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - PYSPARK_PYTHON=python3
+      - JUPYTER_TOKEN=mysparktoken123
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - REGION={REGION}
+    volumes:
+      - ./notebooks:/home/Personal_Projects/Databricks/work
+      - ./spark-data:/opt/spark/data
+      - ./my-notebooks:/home/jovyan/work
+      - ./jars:/opt/spark-jars
+    restart: unless-stopped
+  postgres:
+    image: postgres:14
+    container_name: bi_postgres
+    environment:
+      POSTGRES_USER: metabase
+      POSTGRES_PASSWORD: metabase
+      POSTGRES_DB: metabase
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabase
+      MB_DB_PASS: metabase
+      MB_DB_HOST: postgres
+
+  loader:
+    image: python:3.10-slim
+    container_name: gold_loader
+    depends_on:
+      - postgres
+    volumes:
+      - ./notebooks/data/gold:/data/gold   # map your gold parquet dir into loader
+      - ./loader:/loader                   # put loader script here
+    working_dir: /loader
+    entrypoint: [ "bash", "-lc" ]
+    command: >
+      "pip install pandas pyarrow sqlalchemy psycopg2-binary && python /loader/load_gold_to_postgres.py"
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: metabase
+      PGPASSWORD: metabase
+      PGDATABASE: metabase
+
+volumes:
+  pgdata:
